@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Valentines Day</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <style>
+    body {
+      font-family: "Gochi Hand", cursive;
+    }
+
+    .gradient-background {
+      background: #ffd1dc;
+      background: linear-gradient(180deg, #ffd1dc 0%, #ffd1dc 36%, rgba(255, 255, 255, 1) 100%);
+    }
+  </style>
+</head>
+<body class="gradient-background">
+  <div class="flex items-center justify-center h-screen">
+    <div class="flex flex-col items-center p-4">
+      <img id="imageDisplay" src="./images/image1.gif" alt="Cute kitten with flowers" class="rounded-md h-[300px]" style="object-fit: cover;" />
+      <h2 id="valentineQuestion" class="text-4xl font-bold italic text-[#ff69b4] my-4 text-center">I love you ♥ Will you be my Valentine?</h2>
+      <div class="flex gap-4 pt-[20px] items-center" id="responseButtons">
+        <button id="yesButton"
+          class="bounce inline-flex items-center justify-center whitespace-nowrap rounded-md text-[20px] font-medium disabled:pointer-events-none disabled:opacity-50 hover:bg-pink-300 min-h-12 min-w-[75px] px-4 py-2 bg-pink-400 text-white transition">
+          Yes
+        </button>
+        <button id="noButton"
+          class="inline-flex items-center justify-center whitespace-nowrap rounded-md text-[20px] font-medium transition disabled:pointer-events-none disabled:opacity-50 hover:bg-gray-300 h-12 min-w-[75px] w-auto px-4 py-2 bg-gray-400 text-white">
+          No
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import confetti from 'https://cdn.skypack.dev/canvas-confetti';
+    const yesButton = document.getElementById('yesButton');
+    const noButton = document.getElementById('noButton');
+    const imageDisplay = document.getElementById('imageDisplay');
+    const valentineQuestion = document.getElementById('valentineQuestion');
+    const responseButtons = document.getElementById('responseButtons');
+  
+    let noClickCount = 0;
+    let buttonHeight = 48; // Starting height in pixels
+    let buttonWidth = 80;
+    let fontSize = 20; // Starting font size in pixels
+    const imagePaths = [
+      "./images/image1.gif",
+      "./images/image2.gif",
+      "./images/image3.gif",
+      "./images/image4.gif",
+      "./images/image5.gif",
+      "./images/image6.gif",
+      "./images/image7.gif",
+      "./images/image8.gif",
+      "./images/image9.gif",
+      "./images/image10.gif",
+    ];
+  
+    noButton.addEventListener('click', () => {
+      if (noClickCount < 9) {
+        noClickCount++;
+        imageDisplay.src = imagePaths[noClickCount];
+        buttonHeight += 20; // Increase height by 5px on each click
+        buttonWidth += 35;
+        fontSize += 15; // Increase font size by 1px on each click
+        yesButton.style.height = `${buttonHeight}px`; // Update button height
+        yesButton.style.width = `${buttonWidth}px`;
+        yesButton.style.fontSize = `${fontSize}px`; // Update font size
+        noButton.textContent = ["No", "Are you sure?", "Think again please :(", "Did you think again?", "Are you very sure? :(", "I would love to take you out :(", "Consider one more time please!", "Are you really really sure? ;-;", "click here then :(", "No"][noClickCount];
+      }
+      if (noClickCount >= 9) {
+        imageDisplay.src = imagePaths[9];
+        moveNoButton();
+      }
+    });
+
+    noButton.addEventListener('mouseover', () => {
+      console.log(noClickCount);
+      if (noClickCount >= 9) {
+        moveNoButton();
+      }
+    });
+
+    function moveNoButton() {
+      noButton.style.position = 'absolute';
+      var x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+      var y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+      noButton.style.left = `${x}px`;
+      noButton.style.top = `${y}px`;
+      console.log('move', x, y)
+    }
+  
+    yesButton.addEventListener('click', () => {
+      imageDisplay.classList.remove('h-[300px]');
+      imageDisplay.classList.add('w-[300px]');
+      imageDisplay.src = './images/image0.gif'; 
+      valentineQuestion.textContent = "Yayyy!! See you on valentine's day ♥";
+      responseButtons.style.display = 'none'; // Hide both buttons
+      confetti(); // Trigger confetti animation
+    });
+  </script>  
+</body>
+</html>
